@@ -1,0 +1,93 @@
+{
+  "project_name": "UTM Borrow",
+  "domain_context": "Campus P2P Resource Sharing Mobile App (real-time)",
+  "theme": "light",
+  "archetype": "Vibrant Indigo / Clean Light (2023 modern mobile app)",
+  "design_rationale": "Converted from the original monochrome 'Swiss' look to a vibrant, friendly 2023 app aesthetic: bright white surfaces, a confident indigo-blue primary, soft elevation shadows, generous rounding (rounded-3xl/4xl), colorful status accents, and fluid Framer Motion micro-interactions. The goal is a 'top-app' feel that still reads as trustworthy for a campus marketplace. Indigo (not purple gradients everywhere) keeps it premium rather than AI-slop. Status colors stay semantic and obvious.",
+  "color_palette": {
+    "background": "#F6F7FB",
+    "surface": "#FFFFFF",
+    "text_primary": "#0F172A",
+    "text_secondary": "#64748B",
+    "border": "#E6E8F2",
+    "brand": {
+      "500": "#6366F1",
+      "600": "#4F46E5",
+      "700": "#4338CA",
+      "gradient": "linear-gradient(135deg, #6366F1 0%, #4F46E5 100%)"
+    },
+    "primary_cta": { "bg": "brand-gradient", "text": "#FFFFFF", "shadow": "shadow-glow-sm/glow" },
+    "status": {
+      "pending": "#F59E0B",
+      "borrowed": "#10B981",
+      "cancelled": "#EF4444",
+      "overdue": "#EF4444",
+      "available": "#4F46E5",
+      "completed": "#3B82F6"
+    }
+  },
+  "typography": {
+    "anti_pattern_rule": "Strictly NO Inter, Roboto, Open Sans, or Space Grotesk.",
+    "heading_font": "Outfit (font-head / font-outfit)",
+    "body_font": "IBM Plex Sans (font-plex)",
+    "usage_rules": {
+      "h1": "Outfit, font-extrabold, tracking-tight, text-3xl on mobile; use .text-gradient for accent words.",
+      "h2_h3": "Outfit, font-bold/semibold.",
+      "body": "IBM Plex Sans, leading-relaxed.",
+      "labels_metrics": "Use .label-eyebrow utility (uppercase, tracking-[0.12em], text-secondary)."
+    }
+  },
+  "spacing_and_layout": {
+    "strategy": "Mobile-first, max-w-2xl content column. Cards use generous padding and rounded-3xl. Prefer soft shadows (shadow-soft/card/pop) + 1px borders over heavy borders.",
+    "radii": "Cards rounded-3xl (1.5rem) / rounded-4xl (2rem); inputs & chips rounded-2xl/full; buttons rounded-full.",
+    "shadows": "shadow-soft (subtle), shadow-card (resting elevation), shadow-pop (modals/hover), shadow-glow/-sm (brand CTAs)."
+  },
+  "motion": {
+    "library": "framer-motion",
+    "variants_file": "src/lib/motion.js",
+    "patterns": [
+      "Page transitions: AnimatePresence keyed by pathname in Layout (fade + slide).",
+      "Lists/grids: staggered rise-in via per-item delay; AnimatePresence popLayout for live add/remove.",
+      "Buttons/cards: whileTap scale, whileHover lift (spring).",
+      "Active nav + segmented controls: shared layoutId sliding pill.",
+      "Skeleton shimmer for loading; toast spring slide-in."
+    ],
+    "reduced_motion": "Respected via prefers-reduced-motion in index.css."
+  },
+  "components": {
+    "shared_kit": "src/components/ui.js — Button, IconButton, Input, Textarea, Select, Card, SectionHeader, Chip, Avatar, StatusBadge, UrgentBadge, StarRating, Spinner, PageLoader, EmptyState, LiveDot, Modal.",
+    "skeletons": "src/components/Skeleton.js — CatalogSkeleton, ListSkeleton, etc.",
+    "toasts": "src/components/Toast.js — imperative `toast.success/error/info/show`, rendered by ToastProvider.",
+    "bottom_tab_bar": {
+      "style": "Floating glass pill with sliding gradient active indicator (layoutId).",
+      "classes": "fixed bottom-4 inset-x-4 max-w-md mx-auto glass rounded-full h-16 shadow-pop"
+    },
+    "catalog_item_card": {
+      "style": "Elevated rounded-3xl card, hover lift, gradient placeholder, glass category chip, owner trust rating, live 'New' highlight ring.",
+      "file": "src/components/ItemCard.js"
+    },
+    "status_badges": { "style": "Pill with colored dot + soft tinted bg per status." },
+    "qr_scanner_lender": { "style": "Immersive full-screen camera with dark scrim, corner brackets, animated scan line, success/error full-screen states." },
+    "qr_display_borrower": { "style": "High-contrast white QR card with brand ring inside a bottom-sheet Modal." }
+  },
+  "realtime": {
+    "transport": "Server-Sent Events (SSE). Frontend EventSource at GET /api/events?token=JWT.",
+    "backend": "backend/realtime.py (in-process Broadcaster) + backend/routers/events.py (stream). Routers publish on state changes.",
+    "client": "src/lib/realtime.js — connectRealtime/disconnectRealtime, useRealtimeEvent(type, handler), useRealtimeStatus(). Wired in AuthContext.",
+    "event_types": ["connected", "auth_error", "notification.new", "catalog.changed", "item.updated", "transaction.updated", "moderation.changed"],
+    "behavior": "Catalog auto-refreshes & highlights new/returned items; transaction & dashboard pages update live for both parties; notifications push a live toast + badge; moderation queue updates for admins. Actions still go through REST; SSE is server->client push only.",
+    "scaling_note": "Single-worker in-process fan-out. For multi-worker/horizontal scale, replace the Broadcaster internals with Redis pub/sub (public API unchanged)."
+  },
+  "icons": { "library": "@phosphor-icons/react", "style_notes": "Use 'fill' for active/emphasis, 'regular'/'bold' otherwise." },
+  "accessibility_and_testing": {
+    "contrast": "White on brand-gradient CTAs is accessible; keep body text on #0F172A.",
+    "testing_attributes": "Preserve all existing kebab-case data-testid attributes."
+  },
+  "instructions_to_main_agent": [
+    "Use the shared ui.js kit and Tailwind tokens (brand-*, status-*, shadow-soft/card/pop/glow, rounded-3xl/4xl). Do not reintroduce raw bg-ink CTAs.",
+    "Primary CTAs use the brand gradient; secondary uses white surface + border.",
+    "Keep Outfit for headings and IBM Plex Sans for body.",
+    "For new server state changes, publish the appropriate SSE event so all clients stay live.",
+    "Respect prefers-reduced-motion; keep animations subtle and spring-based."
+  ]
+}

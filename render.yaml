@@ -1,0 +1,29 @@
+# Render blueprint for the UTM Borrow FastAPI backend.
+# In Render: New → Blueprint → connect this repo. Render reads this file and
+# provisions the service. Fill the `sync: false` secrets in the dashboard.
+#
+# A single instance keeps the in-process SSE broadcaster working. Do NOT scale
+# to multiple workers/instances without swapping realtime.py for Redis pub/sub.
+services:
+  - type: web
+    name: utm-borrow-api
+    runtime: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.6"
+      - key: MONGO_URL          # MongoDB Atlas SRV connection string
+        sync: false
+      - key: DB_NAME
+        value: utm_borrow
+      - key: JWT_SECRET         # generate: python -c "import secrets;print(secrets.token_hex(32))"
+        sync: false
+      - key: QR_HMAC_SECRET     # generate a DIFFERENT one
+        sync: false
+      - key: CORS_ORIGINS       # e.g. https://your-app.vercel.app,https://alsakkaf.site
+        sync: false

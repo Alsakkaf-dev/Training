@@ -1,0 +1,132 @@
+// Shared Framer Motion variants & transitions — premium, consistent feel.
+
+// ───────────────────────── Easing curves ──────────────────────────
+export const easeOut      = [0.22, 1, 0.36, 1];
+export const easeSmooth   = [0.4, 0, 0.2, 1];
+export const easeOvershoot= [0.34, 1.56, 0.64, 1];
+
+// ───────────────────────── Spring presets ─────────────────────────
+export const spring      = { type: "spring", stiffness: 380, damping: 30, mass: 0.7 };
+export const softSpring  = { type: "spring", stiffness: 220, damping: 26 };
+export const snappySpring= { type: "spring", stiffness: 500, damping: 36, mass: 0.6 };
+export const bouncySpring= { type: "spring", stiffness: 300, damping: 20, mass: 0.8 };
+export const slowSpring  = { type: "spring", stiffness: 160, damping: 24 };
+
+// ───────────────────────── Page transitions ───────────────────────
+export const pageVariants = {
+  initial: { opacity: 0, y: 14 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.42, ease: easeOut } },
+  exit:    { opacity: 0, y: -8, scale: 0.99, transition: { duration: 0.2, ease: easeSmooth } },
+};
+
+// Directional page variants (for navigating between routes)
+export const pageSlideLeft = {
+  initial: { opacity: 0, x: 32 },
+  animate: { opacity: 1, x: 0,  transition: { duration: 0.38, ease: easeOut } },
+  exit:    { opacity: 0, x: -20, transition: { duration: 0.22, ease: easeSmooth } },
+};
+export const pageSlideRight = {
+  initial: { opacity: 0, x: -32 },
+  animate: { opacity: 1, x: 0,  transition: { duration: 0.38, ease: easeOut } },
+  exit:    { opacity: 0, x: 20,  transition: { duration: 0.22, ease: easeSmooth } },
+};
+
+// ───────────────────────── Stagger containers ─────────────────────
+export const staggerContainer = {
+  animate: { transition: { staggerChildren: 0.055, delayChildren: 0.04 } },
+};
+export const staggerFast = {
+  animate: { transition: { staggerChildren: 0.03, delayChildren: 0.02 } },
+};
+export const staggerSlow = {
+  animate: { transition: { staggerChildren: 0.09, delayChildren: 0.06 } },
+};
+
+// ───────────────────────── List items ─────────────────────────────
+export const riseItem = {
+  initial: { opacity: 0, y: 18, scale: 0.97 },
+  animate: { opacity: 1, y: 0,  scale: 1,    transition: { duration: 0.4, ease: easeOut } },
+  exit:    { opacity: 0, scale: 0.96,         transition: { duration: 0.18 } },
+};
+export const riseItemFast = {
+  initial: { opacity: 0, y: 12, scale: 0.98 },
+  animate: { opacity: 1, y: 0,  scale: 1,    transition: { duration: 0.28, ease: easeOut } },
+  exit:    { opacity: 0,                      transition: { duration: 0.14 } },
+};
+
+// Cards floating in from the side (horizontal lists)
+export const slideItem = {
+  initial: { opacity: 0, x: 20 },
+  animate: { opacity: 1, x: 0,  transition: { duration: 0.36, ease: easeOut } },
+  exit:    { opacity: 0, x: -12, transition: { duration: 0.18 } },
+};
+
+// ───────────────────────── Hero / header sections ─────────────────
+export const heroVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.55, ease: easeOut } },
+};
+export const heroChild = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.42, ease: easeOut } },
+};
+
+// ───────────────────────── Scale / pop ────────────────────────────
+export const popIn = {
+  initial: { opacity: 0, scale: 0.88 },
+  animate: { opacity: 1, scale: 1, transition: { ...bouncySpring } },
+  exit:    { opacity: 0, scale: 0.92, transition: { duration: 0.15 } },
+};
+export const scaleIn = {
+  initial: { opacity: 0, scale: 0.95 },
+  animate: { opacity: 1, scale: 1, transition: { duration: 0.28, ease: easeOut } },
+  exit:    { opacity: 0, scale: 0.95, transition: { duration: 0.18 } },
+};
+export const fadeIn = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.3 } },
+  exit:    { opacity: 0, transition: { duration: 0.2 } },
+};
+
+// ───────────────────────── Tap / hover feedback ───────────────────
+export const tap      = { scale: 0.97 };
+export const tapSmall = { scale: 0.96 };
+export const tapMicro = { scale: 0.98 };
+export const liftHover= { y: -4, transition: spring };
+export const liftHoverSm = { y: -2, transition: softSpring };
+
+// ───────────────────────── Modal / sheet ─────────────────────────
+export const sheetVariants = {
+  initial: { opacity: 0, y: 48, scale: 0.97 },
+  animate: { opacity: 1, y: 0,  scale: 1,    transition: { duration: 0.34, ease: easeOut } },
+  exit:    { opacity: 0, y: 28, scale: 0.97, transition: { duration: 0.22 } },
+};
+export const backdropVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.22 } },
+  exit:    { opacity: 0, transition: { duration: 0.2 } },
+};
+export const drawerVariants = {
+  initial: { x: "100%", opacity: 0.6 },
+  animate: { x: 0, opacity: 1, transition: { ...spring } },
+  exit:    { x: "100%", opacity: 0, transition: { duration: 0.24, ease: easeSmooth } },
+};
+export const drawerLeftVariants = {
+  initial: { x: "-100%", opacity: 0.6 },
+  animate: { x: 0, opacity: 1, transition: { ...spring } },
+  exit:    { x: "-100%", opacity: 0, transition: { duration: 0.24, ease: easeSmooth } },
+};
+
+// ───────────────────────── Accordion / expand ─────────────────────
+export const expandVariants = {
+  initial: { height: 0, opacity: 0 },
+  animate: { height: "auto", opacity: 1, transition: { duration: 0.28, ease: easeOut } },
+  exit:    { height: 0, opacity: 0, transition: { duration: 0.2,  ease: easeSmooth } },
+};
+
+// ───────────────────────── Count-up number ────────────────────────
+export const numberVariants = {
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0, transition: { ...snappySpring } },
+  exit:    { opacity: 0, y: -8, transition: { duration: 0.15 } },
+};
